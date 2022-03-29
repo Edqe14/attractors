@@ -1,5 +1,11 @@
+import Visualizer from '@/components/Visualizer';
+import Overlay from '@/components/Overlay';
+
 const Home = () => (
-  <h1 className="text-lg">Hello World!</h1>
+  <main className="h-screen bg-gray-900">
+    <Overlay />
+    <Visualizer />
+  </main>
 );
 
 export default Home;
