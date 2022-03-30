@@ -106,21 +106,25 @@ const Overlay = () => {
           <InputWrapper className="mb-4" label="Max. Points">
             <Slider
               marks={[
-                { value: 500, label: '500' },
-                { value: 1000, label: '1,000' },
-                { value: 2500, label: '2,000' },
-                { value: 5000, label: '5,000' },
-                { value: 7500, label: '7,500' },
-                { value: 10000, label: '10,000' },
-                { value: 15000, label: '15,000' },
-                { value: 20000, label: '20,000' },
+                { value: 500 },
+                { value: 1000 },
+                { value: 2500 },
+                { value: 5000 },
+                { value: 7500 },
+                { value: 10000 },
+                { value: 15000 },
+                { value: 20000 },
+                { value: 30000 },
+                { value: 40000 },
+                { value: 50000 },
               ]}
               min={500}
-              max={20000}
+              max={50000}
               value={data.maxPoints}
               onChange={handleMaxPoints}
               step={100}
               styles={{ markLabel: { display: 'none' } }}
+              label={(value) => value.toLocaleString('en-US')}
               labelTransition="skew-down"
               labelTransitionDuration={150}
               labelTransitionTimingFunction="ease-in-out"
