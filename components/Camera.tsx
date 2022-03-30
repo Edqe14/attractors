@@ -20,6 +20,7 @@ const Camera = ({ data }: Props) => {
   const { gl } = useThree();
 
   const reset = useRef(false);
+  const autoRotating = useRef(data.autoRotate);
 
   useEffect(() => {
     const handler = () => {
@@ -29,6 +30,7 @@ const Camera = ({ data }: Props) => {
         if (Math.floor(controlTarget.target.distanceTo(target)) <= 8) return;
 
         reset.current = true;
+        autoRotating.current = data.autoRotate === true;
 
         data.setAutoRotate(false);
       }
@@ -37,7 +39,7 @@ const Camera = ({ data }: Props) => {
     gl.domElement.addEventListener('dblclick', handler);
 
     return () => gl.domElement.removeEventListener('dblclick', handler);
-  }, [control, reset]);
+  }, [control, reset, data.autoRotate]);
 
   useFrame(() => {
     const controlTarget = control.current;
@@ -49,9 +51,9 @@ const Camera = ({ data }: Props) => {
       controlTarget.object.updateProjectionMatrix();
 
       if (Math.floor(controlTarget.target.distanceTo(target)) <= 8) {
-        reset.current = false;
+        data.setAutoRotate(autoRotating.current);
 
-        data.setAutoRotate(true);
+        reset.current = false;
       }
     }
   });

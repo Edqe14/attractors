@@ -1,7 +1,9 @@
 import { Euler } from 'three';
 import { Attractor, AttractorType } from '@/types';
+import random from '../random';
 
 const attractors = [
+  // Continuous maps
   {
     id: 'lorenz',
     name: 'Lorenz Attractor',
@@ -119,6 +121,124 @@ const attractors = [
       dX: (vec, consts, multiplier) => (consts.alpha * (vec.y - vec.x - (consts.j * vec.x + (consts.i + consts.j) * (Math.abs(vec.x + 1) - Math.abs(vec.x - 1))))) * multiplier,
       dY: (vec, consts, multiplier) => (consts.beta * (vec.x - vec.y + vec.z)) * multiplier,
       dZ: (vec, consts, multiplier) => (-(consts.sigma) * vec.y) * multiplier,
+    }
+  },
+  {
+    id: 'thomas',
+    name: 'Thomas\' cyclically symmetric attractor',
+    group: 'Curves',
+    type: AttractorType.Curve,
+    options: {
+      multiplier: 0.3,
+      scale: 2
+    },
+    constants: [
+      {
+        id: 'b',
+        name: String.raw`$b$`,
+        value: 0.101,
+        factoryValue: () => 0.101,
+      },
+    ],
+    calculator: {
+      // https://en.wikipedia.org/wiki/Thomas%27_cyclically_symmetric_attractor
+      dX: (vec, consts, multiplier) => (Math.sin(vec.y / 2) - consts.b * vec.x) * multiplier,
+      dY: (vec, consts, multiplier) => (Math.sin(vec.z / 2) - consts.b * vec.y) * multiplier,
+      dZ: (vec, consts, multiplier) => (Math.sin(vec.x / 2) - consts.b * vec.z) * multiplier,
+    }
+  },
+
+  // Discrete maps
+  {
+    id: 'gingerbread',
+    name: 'Gingerbread Man Attractor',
+    group: 'Points',
+    type: AttractorType.Point,
+    options: {
+      multiplier: 1,
+    },
+    constants: [
+      {
+        id: 'x0',
+        name: String.raw`$x_0$`,
+        value: 2.20819008495389,
+        factoryValue: () => random(1, 3)
+      },
+      {
+        id: 'y0',
+        name: String.raw`$y_0$`,
+        value: 1.387685786876872,
+        factoryValue: () => random(1, 3)
+      },
+    ],
+    calculator: {
+      // http://www.3d-meier.de/tut5/Seite8.html
+      x(i, consts, multiplier, array) {
+        if (i <= 0) return (1 - consts.y0 + Math.abs(consts.x0)) * multiplier;
+
+        const bef = array[i - 1];
+
+        return (1 - bef[1] + Math.abs(bef[0])) * multiplier;
+      },
+      y(i, consts, multiplier, array) {
+        if (i <= 0) return consts.x0 * multiplier;
+
+        const bef = array[i - 1];
+
+        return bef[0] * multiplier;
+      }
+    }
+  },
+  {
+    id: 'henon',
+    name: 'Henon Attractor',
+    group: 'Points',
+    type: AttractorType.Point,
+    options: {
+      multiplier: 0.5,
+    },
+    constants: [
+      {
+        id: 'alpha',
+        name: String.raw`$\alpha$`,
+        value: 1.4,
+        factoryValue: () => 1.4
+      },
+      {
+        id: 'beta',
+        name: String.raw`$\beta$`,
+        value: 0.3,
+        factoryValue: () => 0.3
+      },
+      {
+        id: 'x0',
+        name: String.raw`$x_0$`,
+        value: 2.20819008495389,
+        factoryValue: () => random(1, 3)
+      },
+      {
+        id: 'y0',
+        name: String.raw`$y_0$`,
+        value: 1.387685786876872,
+        factoryValue: () => random(1, 3)
+      },
+    ],
+    calculator: {
+      // http://www.3d-meier.de/tut5/Seite8.html
+      x(i, consts, multiplier, array) {
+        if (i <= 0) return (1 + consts.y0 - consts.alpha * (consts.x0 ** 2)) * multiplier;
+
+        const bef = array[i - 1];
+
+        return (1 + bef[1] - consts.alpha * (bef[0] ** 2)) * multiplier;
+      },
+      y(i, consts, multiplier, array) {
+        if (i <= 0) return (consts.beta * consts.x0) * multiplier;
+
+        const bef = array[i - 1];
+
+        return (consts.beta * bef[0])* multiplier;
+      }
     }
   },
 ] as Attractor[];

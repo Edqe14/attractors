@@ -5,14 +5,13 @@ import { BsFillGearFill } from 'react-icons/bs';
 import { useStore } from '@/hooks/store';
 import Markdown from './Markdown';
 
-
 const Overlay = () => {
   const data = useStore();
   const notifs = useNotifications();
 
   const [debug, setDebug] = useState<boolean>(process.env.NODE_ENV === 'development');
   const [openOptions, setOpenOptions] = useState<boolean>(false);
-  const [expandConstants, setExpandConstants] = useState<boolean>(true);
+  const [expandConstants, setExpandConstants] = useState<boolean>(false);
 
   useEffect(() => {
     if (localStorage.getItem('debug')) setDebug(true);
@@ -51,7 +50,7 @@ const Overlay = () => {
     <section className="absolute top-0 left-0 h-full w-full z-10 text-white p-8 pointer-events-none">
       <div className="relative h-full">
         {debug && (
-          <section className="mb-4 absolute right-0 pointer-events-auto">
+          <section className="mb-4 absolute right-0 pointer-events-auto opacity-25 hover:opacity-50 transition-opacity ease-in-out duration-200">
             <p className="text-lg font-semibold">DEBUG</p>
 
             <section className="text-gray-200">
@@ -64,7 +63,8 @@ const Overlay = () => {
         )}
 
         <section className="max-w-xs pointer-events-auto filter drop-shadow-sm">
-          <Select className="mb-4" label="Attractor" data={data.attractors.map((a) => ({ value: a.id, label: a.name, group: a.group }))} value={data.activeAttractor?.id} onChange={setActive} />
+          {/* Disabled non-curves attractor due to slow processing and bugs */}
+          <Select className="mb-4" label="Attractor" data={data.attractors.map((a) => ({ value: a.id, label: a.name, group: a.group, disabled: a.group?.toLowerCase() !== 'curves' }))} value={data.activeAttractor?.id} onChange={setActive} />
 
           <InputWrapper
             label={(
@@ -73,7 +73,9 @@ const Overlay = () => {
 
                 <Space w="md" />
 
-                <p className={`text-xs ${expandConstants ? 'text-red-500' : 'text-green-500'}`}>{expandConstants ? 'Hide' : 'Expand'}</p>
+                <p className={`text-xs ${expandConstants ? 'text-red-500' : 'text-green-500'}`}>
+                  {expandConstants ? 'Hide' : 'Expand'}
+                </p>
               </span>
             )}
           >
@@ -90,10 +92,10 @@ const Overlay = () => {
                   className="mb-2"
                 />
               ))}
+
+              <Button color="red" className="mt-2" onClick={resetConstants}>Reset</Button>
             </Collapse>
           </InputWrapper>
-
-          <Button color="red" className="mt-2" onClick={resetConstants}>Reset</Button>
         </section>
 
         <BsFillGearFill size="1.5rem" className="cursor-pointer absolute bottom-0 left-0 pointer-events-auto" onClick={() => setOpenOptions(true)} />
@@ -194,6 +196,10 @@ const Overlay = () => {
                 />
               </InputWrapper>
             )}
+          </InputWrapper>
+
+          <InputWrapper className="mb-4" label="Trailing Color">
+            <Checkbox label="Enable" disabled className="mb-1" checked={data.multiColor} onChange={(ev) => data.setMultiColor(ev.currentTarget.checked)} />
           </InputWrapper>
         </Drawer>
       </div>
