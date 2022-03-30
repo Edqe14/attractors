@@ -18,7 +18,7 @@ export const Provider = (props: Record<string, any>) => {
   const [activeAttractor, setActiveAttractor] = useState<Store['activeAttractor']>({ ...attractors[index] });
   const [multiplier, setMultiplier] = useState<Store['multiplier']>(activeAttractor?.options?.multiplier ?? 0.008);
   const [points, setPoints] = useState<Store['points']>([coordinate.current.clone()]);
-  const [color, setColor] = useState<Store['color']>('#ffffff');
+  const [color, setColor] = useState<Store['color']>('#f74545');
   const [lineWidth, setLineWidth] = useState<Store['lineWidth']>(0.5);
   const [scale, setScale] = useState<Store['scale']>(activeAttractor?.options?.scale ?? 1);
   const [autoRotate, setAutoRotate] = useState<Store['autoRotate']>(true);
@@ -32,7 +32,7 @@ export const Provider = (props: Record<string, any>) => {
     setAutoRotateSpeed(parseFloat(fetchStorage('autoRotateSpeed', '1')));
     setMaxPoints(parseInt(fetchStorage('maxPoints', '7500'), 10));
     setLineWidth(parseFloat(fetchStorage('lineWidth', '0.5')));
-    setColor(fetchStorage('color', '#ffffff'));
+    setColor(fetchStorage('color', '#f74545'));
   }, []);
 
   // Update localStorage
