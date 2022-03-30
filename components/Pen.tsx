@@ -1,7 +1,7 @@
 import { Instance, Instances, Line } from '@react-three/drei';
-import { useFrame, useThree } from '@react-three/fiber';
+import { useFrame } from '@react-three/fiber';
 import { Vector3 } from 'three';
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import { AttractorType, Store } from '@/types';
 import runCalculator from '@/lib/runCalculator';
 
