@@ -1,9 +1,9 @@
 import { Button, Checkbox, Collapse, ColorInput, Drawer, InputWrapper, NumberInput, Select , Slider, Space } from '@mantine/core';
 import { showNotification, useNotifications } from '@mantine/notifications';
 import { useEffect, useState } from 'react';
-import { BsFillGearFill } from 'react-icons/bs';
 import { useStore } from '@/hooks/store';
 import Markdown from './Markdown';
+import Links from './Links';
 
 const Overlay = () => {
   const data = useStore();
@@ -98,7 +98,7 @@ const Overlay = () => {
           </InputWrapper>
         </section>
 
-        <BsFillGearFill size="1.5rem" className="cursor-pointer absolute bottom-0 left-0 pointer-events-auto" onClick={() => setOpenOptions(true)} />
+        <Links setOpenOptions={setOpenOptions} />
 
         <Drawer opened={openOptions} onClose={() => setOpenOptions(false)} title="Settings" padding="xl" size="xl">
           <ColorInput className="mb-4" value={data.color} label="Color" onChange={data.setColor} />
