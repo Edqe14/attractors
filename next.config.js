@@ -9,5 +9,11 @@ module.exports = withPWA({
     dest: 'public',
     skipWaiting: true,
     clientsClaim: true,
+    runtimeCaching: [
+      {
+        urlPattern: 'https://www.google-analytics.com/analytics.js',
+        handler: 'NetworkOnly'
+      }
+    ]
   }
 });

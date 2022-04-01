@@ -1,12 +1,21 @@
 import '../styles/globals.css';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
+import ReactGA from 'react-ga';
 
 import { MantineProvider } from '@mantine/core';
 import { NotificationsProvider } from '@mantine/notifications';
+import { useEffect } from 'react';
 import { Provider as StoreProvider } from '@/hooks/store';
 
 function MyApp({ Component, pageProps }: AppProps) {
+  useEffect(() => {
+    if (process.env.NEXT_PUBLIC_GA_ID) {
+      ReactGA.initialize(process.env.NEXT_PUBLIC_GA_ID);
+      ReactGA.pageview(window.location.pathname + window.location.search);
+    }
+  }, []);
+
   return (
     <>
       <Head>
